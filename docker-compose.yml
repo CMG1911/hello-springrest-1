@@ -1,0 +1,7 @@
+version: "3.0"
+services:
+  hello-springrest:  
+    image: ghcr.io/cmg1911/hello-springrest:latest
+    build: .
+    ports:
+      - "80:8080"
