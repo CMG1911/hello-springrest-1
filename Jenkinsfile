@@ -11,7 +11,7 @@ pipeline {
          steps {
               sh './gradlew test'
             }
-         }   
+            
          post {
              always {
                 junit(testResults: 'build/test-results/test/*xml', allowEmptyResults: true)
@@ -21,16 +21,18 @@ pipeline {
                     sourcePattern: 'src/main/java/com/example/restservice')
              }
          }
+       } 
         stage('Tests'){
          steps {
               sh './gradlew check'
             }
-         }   
+            
          post {
              always {
                 recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd')])
              }
          }
+       }
         stage('Image builder') {
           steps {
             sh 'docker-compose build'
