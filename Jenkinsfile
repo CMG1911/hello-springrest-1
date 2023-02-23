@@ -19,6 +19,7 @@ pipeline {
                     classPattern: 'build/classes/java/main',
                     execPattern: 'build/jacoco/*.exec',
                     sourcePattern: 'src/main/java/com/example/restservice')
+                pmd: [qualityGates: [[threshold: 1, type: 'NEW', unstable: true]]]
              }
          }
        }
