@@ -16,7 +16,7 @@ pipeline {
          post {
              always {
                 recordIssues(tools: [trivy(pattern: 'resultsrepo.json')])
-                recordIssues(tools: [pmdParser(pattern: 'resultsfile.json')])
+                recordIssues(tools: [trivy(pattern: 'resultsfile.json')])
              }
          }
        }
@@ -36,15 +36,13 @@ pipeline {
              }
          }
        } 
-        stage('Check'){
+        stage('Check-PMD'){
          steps {
               sh './gradlew check'
-              sh 'trivy repo -f json -o resultsrepo.json  https://github.com/CMG1911/hello-springrest-1.git'
             }
             
          post {
              always {
-                recordIssues(tools: [trivy(pattern: 'resultsrepo.json')])
                 recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd/*.xml')])
 
              }
