@@ -25,12 +25,12 @@ pipeline {
         stage('Check'){
          steps {
               sh './gradlew check'
-              sh 'trivy repo -f log -o resultsrepo.log  https://github.com/CMG1911/hello-springrest-1.git'
+              sh 'trivy repo -f json -o resultsrepo.json  https://github.com/CMG1911/hello-springrest-1.git'
             }
             
          post {
              always {
-                recordIssues(tools: [trivy(pattern: 'resultsrepo.log')])
+                recordIssues(tools: [trivy(pattern: 'resultsrepo.json')])
                 recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd/*.xml')])
 
              }
@@ -51,11 +51,12 @@ pipeline {
                 sh "echo $CR_PAT | docker login ghcr.io -u CMG1911 --password-stdin"
                 sh 'docker-compose push'
                 sh "docker push ghcr.io/cmg1911/hello-springrest:1.0.${BUILD_NUMBER}"
+                sh 'trivy image -f json -o image1.json ghcr.io/cmg1911/hello-2048:latest'
                 }
            }
           post {
              always {
-                recordIssues(tools: [trivy(pattern: 'image -f json -o image.json ghcr.io/cmg1911/hello-sprintrest:latest')])
+                recordIssues(tools: [trivy(pattern: 'image.json')])
              }
           }
         }   
