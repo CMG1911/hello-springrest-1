@@ -1,4 +1,4 @@
-FROM gradle:8.0.1-jdk17-alpine as Builder
+FROM amazoncorretto:11-alpine3.17 as Builder
 WORKDIR /tmp/app
 COPY . .
 RUN ./gradlew assemble
