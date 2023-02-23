@@ -19,12 +19,20 @@ pipeline {
                     classPattern: 'build/classes/java/main',
                     execPattern: 'build/jacoco/*.exec',
                     sourcePattern: 'src/main/java/com/example/restservice')
-                pmd: [qualityGates: [[threshold: 1, type: 'NEW', unstable: true]]]
              }
          }
-       }
-       stage('Image builder') {
+        stage('Tests'){
          steps {
+              sh './gradlew check'
+            }
+         }   
+         post {
+             always {
+                recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd')])
+             }
+         }
+        stage('Image builder') {
+          steps {
             sh 'docker-compose build'
             sh "git tag 1.0.${BUILD_NUMBER}"
             sh "docker tag ghcr.io/cmg1911/hello-sprintrest ghcr.io/cmg1911/hello-sprintrest:1.0.${BUILD_NUMBER}"
@@ -51,4 +59,5 @@ pipeline {
                 }
             }
         }
-    }
+     }
+}
