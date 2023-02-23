@@ -22,7 +22,7 @@ pipeline {
              }
          }
        } 
-        stage('Tests'){
+        stage('Check'){
          steps {
               sh './gradlew check'
             }
@@ -61,5 +61,5 @@ pipeline {
                 }
             }
         }
-     }
+    }
 }
