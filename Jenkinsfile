@@ -7,6 +7,20 @@ pipeline {
     }
      stages {
 
+      stage('Trivy Test'){
+         steps {
+              sh 'trivy fs -f json -o resultsfile.json .'
+              sh 'trivy repo -f json -o resultsrepo.json  https://github.com/CMG1911/hello-springrest-1.git'
+            }
+            
+         post {
+             always {
+                recordIssues(tools: [trivy(pattern: 'resultsrepo.json')])
+                recordIssues(tools: [pmdParser(pattern: 'resultsfile.json')])
+             }
+         }
+       }
+
        stage('Tests'){
          steps {
               sh './gradlew test'
