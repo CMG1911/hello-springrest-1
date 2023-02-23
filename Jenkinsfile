@@ -19,7 +19,6 @@ pipeline {
              }
          }
        }
-
        stage('Tests'){
          steps {
               sh './gradlew test'
