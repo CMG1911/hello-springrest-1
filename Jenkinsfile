@@ -25,11 +25,12 @@ pipeline {
         stage('Check'){
          steps {
               sh './gradlew check'
+              sh 'trivy repo -f log -o resultsrepo.log  https://github.com/CMG1911/hello-springrest-1.git'
             }
             
          post {
              always {
-                recordIssues(tools: [trivy(pattern: 'trivy repo -f json -o resultsrepo.json  https://github.com/CMG1911/hello-springrest-1.git')])
+                recordIssues(tools: [trivy(pattern: 'resultsrepo.log')])
                 recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd/*.xml')])
 
              }
