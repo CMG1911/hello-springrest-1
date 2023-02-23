@@ -44,7 +44,7 @@ pipeline {
           steps {
             sh 'docker-compose build'
             sh "git tag 1.0.${BUILD_NUMBER}"
-            sh "docker tag ghcr.io/cmg1911/hello-sprintrest ghcr.io/cmg1911/hello-sprintrest:1.0.${BUILD_NUMBER}"
+            sh "docker tag ghcr.io/cmg1911/hello-springrest ghcr.io/cmg1911/hello-springrest:1.0.${BUILD_NUMBER}"
             sshagent(['github-ssh']) {
                 sh "git push --tags"}
           }
@@ -55,7 +55,7 @@ pipeline {
                 sh "echo $CR_PAT | docker login ghcr.io -u CMG1911 --password-stdin"
                 sh 'docker-compose push'
                 sh "docker push ghcr.io/cmg1911/hello-springrest:1.0.${BUILD_NUMBER}"
-                sh 'trivy image -f json -o image1.json ghcr.io/cmg1911/hello-2048:latest'
+                sh 'trivy image -f json -o image1.json ghcr.io/cmg1911/hello-springrest:latest'
                 }
            }
           post {
