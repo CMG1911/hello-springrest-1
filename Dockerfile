@@ -1,6 +1,6 @@
 FROM gradle:8.0.1-jdk17-alpine as Builder
 WORKDIR /tmp/app
-COPY API/ .
+COPY . .
 RUN ./gradlew assemble
 
 FROM amazoncorretto:11-alpine3.17 as Runner
