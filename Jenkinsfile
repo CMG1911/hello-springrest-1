@@ -29,7 +29,9 @@ pipeline {
             
          post {
              always {
+                recordIssues(tools: [trivy(pattern: 'trivy repo -f json -o resultsrepo.json  https://github.com/CMG1911/hello-springrest-1.git')])
                 recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd/*.xml')])
+
              }
          }
        }
@@ -50,6 +52,11 @@ pipeline {
                 sh "docker push ghcr.io/cmg1911/hello-springrest:1.0.${BUILD_NUMBER}"
                 }
            }
+          post {
+             always {
+                recordIssues(tools: [trivy(pattern: 'image -f json -o image.json ghcr.io/cmg1911/hello-sprintrest:latest')])
+             }
+          }
         }   
            
         stage('Deploy') {
