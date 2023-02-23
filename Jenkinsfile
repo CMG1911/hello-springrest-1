@@ -29,7 +29,7 @@ pipeline {
             
          post {
              always {
-                recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd')])
+                recordIssues(tools: [pmdParser(pattern: 'build/reports/pmd/*.xml')])
              }
          }
        }
