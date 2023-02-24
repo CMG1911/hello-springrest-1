@@ -1,6 +1,6 @@
 branch-defaults:
   main:
-    environment: null
+    environment: hello-springrest-1
 global:
   application_name: hello-springrest
   branch: null
